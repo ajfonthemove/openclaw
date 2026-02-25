@@ -41,6 +41,7 @@ type DiscordReactionListenerParams = {
   accountId: string;
   runtime: RuntimeEnv;
   botUserId?: string;
+  allowNameMatching: boolean;
   guildEntries?: Record<string, import("./allow-list.js").DiscordGuildEntryResolved>;
   logger: Logger;
 };
@@ -182,6 +183,7 @@ async function runDiscordReactionHandler(params: {
         cfg: params.handlerParams.cfg,
         accountId: params.handlerParams.accountId,
         botUserId: params.handlerParams.botUserId,
+        allowNameMatching: params.handlerParams.allowNameMatching,
         guildEntries: params.handlerParams.guildEntries,
         logger: params.handlerParams.logger,
       }),
@@ -195,6 +197,7 @@ async function handleDiscordReactionEvent(params: {
   cfg: LoadedConfig;
   accountId: string;
   botUserId?: string;
+  allowNameMatching: boolean;
   guildEntries?: Record<string, import("./allow-list.js").DiscordGuildEntryResolved>;
   logger: Logger;
 }) {
@@ -296,6 +299,7 @@ async function handleDiscordReactionEvent(params: {
         userName: user.username,
         userTag: formatDiscordUserTag(user),
         allowlist: guildInfo?.users,
+        allowNameMatching: params.allowNameMatching,
       });
     const emitReactionWithAuthor = (message: { author?: User } | null) => {
       const { baseText } = resolveReactionBase();
